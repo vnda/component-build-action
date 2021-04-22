@@ -3,7 +3,7 @@ description: "Action to build store components"
 runs:
   using: "composite"
   steps:
-    - run: test -n "${GITHUB_REF/refs\/tags\//}" && echo "::set-output name=string::${GITHUB_REF/refs\/tags\//}" || echo "::set-output name=string::beta"
+    - run: (grep -q "tags" <<< "$GITHUB_REF" && echo "::set-output name=string::${GITHUB_REF/refs\/tags\//}") || echo "::set-output name=string::beta"
       id: revision
       shell: bash
 
