@@ -1,0 +1,21 @@
+name: "Component"
+description: "Action to build store components"
+runs:
+  using: "composite"
+  steps:
+    - run: test -n "${GITHUB_REF/refs\/tags\//}" && echo "::set-output name=string::${GITHUB_REF/refs\/tags\//}" || echo "::set-output name=string::beta"
+      id: revision
+      shell: bash
+
+    - run: yarn install --frozen-lockfile
+      shell: bash
+
+    - run: make build
+      env:
+        APP_REVISION: ${{ steps.revision.outputs.string }}
+      shell: bash
+
+    - run: make upload
+      env:
+        APP_REVISION: ${{ steps.revision.outputs.string }}
+      shell: bash
