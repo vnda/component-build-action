@@ -12,6 +12,7 @@ runs:
 
     - run: make build
       env:
+        NODE_ENV: production
         APP_REVISION: ${{ steps.revision.outputs.string }}
       shell: bash
 
